@@ -1,0 +1,8 @@
+PyMuPDF
+pytesseract
+Pillow
+pdf2image
+nltk
+streamlit
+google-generativeai
+python-dotenv
