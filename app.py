@@ -1,18 +1,18 @@
-import streamlit as st
-import fitz  # For PyMuPDF
-import pytesseract  # For OCR (Pytesseract)
-from pdf2image import convert_from_path  # For Pdf to Image Conversions
-import nltk  # For Preprocessing Texts
-import re  # For Preprocessing Texts
+import streamlit as st #Fpr Streamlit UI
+import fitz  #For PyMuPDF
+import pytesseract #For OCR (Pytesseract)
+from pdf2image import convert_from_path #For Pdf to Image Conversions
+import nltk #For Preprocessing Texts
+import re #For Preprocessing Texts
 import os
-from dotenv import load_dotenv  # For Loading Environment Variables
-import google.generativeai as genai  # For Loading Gemini Pro LLM
+from dotenv import load_dotenv #For Loading Enviroment Vairables
+import google.generativeai as genai  #For Loading Gemini Pro LLM
 import tempfile
 
-# Load Environment Variables
+#Load Environment Variables
 load_dotenv()
 
-# Pytesseract Configuration
+#Pytesseract Configuration
 pytesseract.pytesseract.tesseract_cmd = r'Your Tesseract Path'
 
 # Ensure NLTK data is downloaded
@@ -56,7 +56,7 @@ def preprocess_text(text):
     tokenized_sentences = tokenize_sentences(sentences)
     return tokenized_sentences
 
-# Function to call Gemini LLM
+#Function to call Gemini LLM
 def generate_response(prompt):
     response = model.generate_content(prompt)
     return response.text
@@ -103,12 +103,18 @@ if uploaded_file is not None:
 
     # Convert PDF to text
     text = convert_pdf_to_txt("temp.pdf")
+    st.subheader("Extracted Text")
+    st.text(text)
 
     # OCR on images
     try:
         with tempfile.TemporaryDirectory() as tempdir:
             pages = convert_from_path("temp.pdf", 500, poppler_path=r'Your Poppler Path')
             image_text = extract_text_from_images(pages)
+            st.subheader("OCR Extracted Text from Images")
+            st.text(image_text)
+
+            # Combine text and image text
             full_text = text + "\n" + image_text
     except Exception as e:
         st.error(f"Error in extracting images from PDF: {e}")
@@ -116,65 +122,33 @@ if uploaded_file is not None:
 
     # Preprocess text
     preprocessed_text = preprocess_text(full_text)
+    st.subheader("Preprocessed Text")
+    st.write(preprocessed_text)
 
     # Information Extraction
+    st.subheader("Information Extraction")
     entities = extract_entities(full_text)
+    st.text("Entities:")
+    st.text(entities)
     relationships = extract_relationships(full_text)
+    st.text("Relationships:")
+    st.text(relationships)
     summary = summarize_text(full_text)
+    st.text("Summary:")
+    st.text(summary)
 
     # Document Classification
     categories = ["Personal", "Work", "Legal", "Medical"]
     classification = classify_document(full_text, categories)
+    st.subheader("Document Classification")
+    st.text(f"Classification: {classification}")
 
-    st.header("SmartDoc - ChatBot")
-    user_input = st.text_input("Enter a Question to ask..")
-    if user_input:
-        prompt = f'''You are a helpful, respectful and honest assistant. Always answer as 
-        helpfully as possible, while being safe. Your answers should not include
-        any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
-        Please ensure that your responses are socially unbiased and positive in nature.
-        If a question does not make any sense, or is not factually coherent, explain 
-        why instead of answering something not correct. If you don't know the answer 
-        to a question, please don't share false information.
-        Your goal is to provide {user_input} answers from the {full_text} accurately.'''
-
-        ans = generate_response(prompt)
-        st.text(ans)
-
-    
-    st.header("To know Information about your Document:")
-
-    # Create dropdowns for displaying the information
-    with st.expander("Extracted Text and OCR Extracted Text from Images (Combined)"):
-        st.subheader("Extracted Text and OCR Extracted Text from Images (Combined)")
-        st.text(full_text)
-
-    with st.expander("Preprocessed Text"):
-        st.subheader("Preprocessed Text")
-        st.write(preprocessed_text)
-
-    with st.expander("Information Extraction"):
-        st.subheader("Information Extraction")
-        st.text("Entities:")
-        st.text(entities)
-        st.text("Relationships:")
-        st.text(relationships)
-        st.text("Summary:")
-        st.text(summary)
-
-    with st.expander("Document Classification"):
-        st.subheader("Document Classification")
-        st.text(f"Classification: {classification}")
-    
     # Internal Translation
-    target_language = st.selectbox("Select target language for translation", ["English", "Spanish", "French", "German", "Chinese", "Japanese"])
+    target_language = st.selectbox("Select target language for translation", ["Spanish", "French", "German", "Chinese", "Japan"])
     if target_language:
         translation = translate_text(full_text, target_language)
-
-    if target_language:
-        with st.expander(f"Translation to {target_language}"):
-            st.subheader(f"Translation to {target_language}")
-            st.text(translation)
+        st.subheader(f"Translation to {target_language}")
+        st.text(translation)
 
     # Clean up temporary files
     os.remove("temp.pdf")
