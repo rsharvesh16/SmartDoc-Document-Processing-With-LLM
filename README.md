@@ -1,6 +1,6 @@
 # SmartDoc: Intelligent Document Processing with LLM Integration
 
-SmartDoc is an intelligent document processing system that leverages OCR and LLM integration to convert, analyze, and extract valuable information from PDFs. This project provides a user-friendly interface for comprehensive document understanding, translation, and includes a chatbot for interactive queries.
+SmartDoc is an intelligent document processing system that leverages OCR and LLM integration to convert, analyze, and extract valuable information from PDFs. This project provides a user-friendly interface for comprehensive document understanding, and translation, and includes a chatbot for interactive queries.
 
 <div align="center">
 <img width="446" alt="image" src="SmartDoc.png">
@@ -11,7 +11,7 @@ SmartDoc is an intelligent document processing system that leverages OCR and LLM
 - **PDF to Text Conversion**: Extract text from PDF files using PyMuPDF.
 - **OCR Integration**: Extract text from images within PDFs using Tesseract OCR.
 - **Text Preprocessing**: Clean, segment, and tokenize text for optimal LLM performance.
-- **Information Extraction**: Identify and extract entities, relationships, and summarize key information using Gemini LLM.
+- **Information Extraction**: Identify and extract entities, and relationships, and summarize key information using Gemini LLM.
 - **Document Classification**: Classify documents into predefined categories.
 - **Translation**: Translate extracted text into different languages.
 - **Interactive Interface**: User-friendly Streamlit interface for easy interaction.
@@ -85,7 +85,11 @@ SmartDoc is an intelligent document processing system that leverages OCR and LLM
 
 ## Chatbot Integration
 
-SmartDoc includes a chatbot feature that allows you to interact with the extracted data in a conversational manner. You can ask questions about the document. The chatbot leverages the Gemini LLM for generating intelligent and contextual responses.
+SmartDoc includes a chatbot feature that allows you to interact with the extracted data in a conversational manner. You can ask questions about the document. The chatbot leverages the Gemini LLM to generate intelligent and contextual responses.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
