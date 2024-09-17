@@ -6,3 +6,5 @@ nltk
 streamlit
 google-generativeai
 python-dotenv
+boto3
+awscli
